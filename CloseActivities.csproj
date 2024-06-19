@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{716844D4-4068-4F33-943F-0068397A3368}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>CloseActivities2</RootNamespace>
-    <AssemblyName>CloseActivities2</AssemblyName>
+    <RootNamespace>CloseActivities</RootNamespace>
+    <AssemblyName>CloseActivities</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -79,6 +79,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
