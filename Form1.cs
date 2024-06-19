@@ -188,8 +188,7 @@ namespace CloseActivities
                 panel2.Visible = false;
                 panel3.Visible = true;
 
-                Update_Info_Activitees();
-                //Run Proc Update_Info_Activitees
+            //    Update_Info_Activitees();
             }
         }
 
