@@ -31,11 +31,24 @@ namespace CloseActivities
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.Button1 = new System.Windows.Forms.Button();
+            this.btnGetSQL = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.Button2 = new System.Windows.Forms.Button();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.btnLoadSQL = new System.Windows.Forms.Button();
+            this.panel5 = new System.Windows.Forms.Panel();
             this.Button5 = new System.Windows.Forms.Button();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.txtOutput = new System.Windows.Forms.TextBox();
+            this.btnOpenSapGui = new System.Windows.Forms.Button();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.txtPassword = new System.Windows.Forms.TextBox();
+            this.txtUser = new System.Windows.Forms.TextBox();
+            this.txtClient = new System.Windows.Forms.TextBox();
+            this.txtSapSystem = new System.Windows.Forms.TextBox();
+            this.txtSapGuiPath = new System.Windows.Forms.TextBox();
             this.Button4 = new System.Windows.Forms.Button();
             this.Button3 = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
@@ -58,77 +71,81 @@ namespace CloseActivities
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
+            this.btnOpenSAP = new System.Windows.Forms.Button();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.panel5.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.Button1);
+            this.panel1.Controls.Add(this.btnGetSQL);
             this.panel1.Location = new System.Drawing.Point(105, 27);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(404, 39);
+            this.panel1.Size = new System.Drawing.Size(250, 39);
             this.panel1.TabIndex = 59;
             // 
-            // Button1
+            // btnGetSQL
             // 
-            this.Button1.Location = new System.Drawing.Point(108, 2);
-            this.Button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Button1.Name = "Button1";
-            this.Button1.Size = new System.Drawing.Size(220, 34);
-            this.Button1.TabIndex = 58;
-            this.Button1.Text = "Choisir le Fichier Excel";
-            this.Button1.UseVisualStyleBackColor = true;
-            this.Button1.Click += new System.EventHandler(this.Button1_Click_1);
+            this.btnGetSQL.Location = new System.Drawing.Point(15, 3);
+            this.btnGetSQL.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnGetSQL.Name = "btnGetSQL";
+            this.btnGetSQL.Size = new System.Drawing.Size(220, 34);
+            this.btnGetSQL.TabIndex = 58;
+            this.btnGetSQL.Text = "Choisir le Fichier Excel";
+            this.btnGetSQL.UseVisualStyleBackColor = true;
+            this.btnGetSQL.Click += new System.EventHandler(this.Button1_Click_1);
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.Button2);
-            this.panel2.Location = new System.Drawing.Point(528, 27);
+            this.panel2.Controls.Add(this.btnLoadSQL);
+            this.panel2.Location = new System.Drawing.Point(373, 27);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(404, 39);
+            this.panel2.Size = new System.Drawing.Size(250, 39);
             this.panel2.TabIndex = 60;
             // 
-            // Button2
+            // btnLoadSQL
             // 
-            this.Button2.Location = new System.Drawing.Point(87, 2);
-            this.Button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Button2.Name = "Button2";
-            this.Button2.Size = new System.Drawing.Size(220, 34);
-            this.Button2.TabIndex = 59;
-            this.Button2.Text = "Télécharger dans SQL Server";
-            this.Button2.UseVisualStyleBackColor = true;
-            this.Button2.Click += new System.EventHandler(this.Button2_Click);
+            this.btnLoadSQL.Location = new System.Drawing.Point(15, 3);
+            this.btnLoadSQL.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnLoadSQL.Name = "btnLoadSQL";
+            this.btnLoadSQL.Size = new System.Drawing.Size(220, 34);
+            this.btnLoadSQL.TabIndex = 59;
+            this.btnLoadSQL.Text = "Télécharger dans SQL Server";
+            this.btnLoadSQL.UseVisualStyleBackColor = true;
+            this.btnLoadSQL.Click += new System.EventHandler(this.Button2_Click);
             // 
-            // panel3
+            // panel5
             // 
-            this.panel3.Controls.Add(this.Button5);
-            this.panel3.Controls.Add(this.Button4);
-            this.panel3.Controls.Add(this.Button3);
-            this.panel3.Controls.Add(this.label8);
-            this.panel3.Controls.Add(this.label7);
-            this.panel3.Controls.Add(this.label6);
-            this.panel3.Controls.Add(this.label5);
-            this.panel3.Controls.Add(this.label4);
-            this.panel3.Controls.Add(this.label3);
-            this.panel3.Controls.Add(this.label2);
-            this.panel3.Controls.Add(this.label1);
-            this.panel3.Controls.Add(this.dateTimePicker2);
-            this.panel3.Controls.Add(this.dateTimePicker1);
-            this.panel3.Controls.Add(this.textBox6);
-            this.panel3.Controls.Add(this.textBox5);
-            this.panel3.Controls.Add(this.textBox4);
-            this.panel3.Controls.Add(this.textBox3);
-            this.panel3.Controls.Add(this.textBox2);
-            this.panel3.Controls.Add(this.textBox1);
-            this.panel3.Location = new System.Drawing.Point(105, 143);
-            this.panel3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(827, 420);
-            this.panel3.TabIndex = 61;
+            this.panel5.Controls.Add(this.Button5);
+            this.panel5.Controls.Add(this.Button4);
+            this.panel5.Controls.Add(this.Button3);
+            this.panel5.Controls.Add(this.label8);
+            this.panel5.Controls.Add(this.label7);
+            this.panel5.Controls.Add(this.label6);
+            this.panel5.Controls.Add(this.label5);
+            this.panel5.Controls.Add(this.label4);
+            this.panel5.Controls.Add(this.label3);
+            this.panel5.Controls.Add(this.label2);
+            this.panel5.Controls.Add(this.label1);
+            this.panel5.Controls.Add(this.dateTimePicker2);
+            this.panel5.Controls.Add(this.dateTimePicker1);
+            this.panel5.Controls.Add(this.textBox6);
+            this.panel5.Controls.Add(this.textBox5);
+            this.panel5.Controls.Add(this.textBox4);
+            this.panel5.Controls.Add(this.textBox3);
+            this.panel5.Controls.Add(this.textBox2);
+            this.panel5.Controls.Add(this.textBox1);
+            this.panel5.Location = new System.Drawing.Point(105, 143);
+            this.panel5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(821, 420);
+            this.panel5.TabIndex = 61;
             // 
             // Button5
             // 
@@ -139,6 +156,132 @@ namespace CloseActivities
             this.Button5.TabIndex = 75;
             this.Button5.Text = "Reset TECO (retour en arrière)";
             this.Button5.UseVisualStyleBackColor = true;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.txtOutput);
+            this.panel4.Controls.Add(this.btnOpenSapGui);
+            this.panel4.Controls.Add(this.label12);
+            this.panel4.Controls.Add(this.label13);
+            this.panel4.Controls.Add(this.label14);
+            this.panel4.Controls.Add(this.label15);
+            this.panel4.Controls.Add(this.label16);
+            this.panel4.Controls.Add(this.txtPassword);
+            this.panel4.Controls.Add(this.txtUser);
+            this.panel4.Controls.Add(this.txtClient);
+            this.panel4.Controls.Add(this.txtSapSystem);
+            this.panel4.Controls.Add(this.txtSapGuiPath);
+            this.panel4.Location = new System.Drawing.Point(108, 143);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(821, 420);
+            this.panel4.TabIndex = 79;
+            // 
+            // txtOutput
+            // 
+            this.txtOutput.Location = new System.Drawing.Point(106, 340);
+            this.txtOutput.Multiline = true;
+            this.txtOutput.Name = "txtOutput";
+            this.txtOutput.Size = new System.Drawing.Size(325, 56);
+            this.txtOutput.TabIndex = 90;
+            // 
+            // btnOpenSapGui
+            // 
+            this.btnOpenSapGui.Location = new System.Drawing.Point(233, 275);
+            this.btnOpenSapGui.Name = "btnOpenSapGui";
+            this.btnOpenSapGui.Size = new System.Drawing.Size(129, 40);
+            this.btnOpenSapGui.TabIndex = 89;
+            this.btnOpenSapGui.Text = "Connect";
+            this.btnOpenSapGui.UseVisualStyleBackColor = true;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(102, 216);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(78, 20);
+            this.label12.TabIndex = 88;
+            this.label12.Text = "Password";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(137, 173);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(43, 20);
+            this.label13.TabIndex = 87;
+            this.label13.Text = "User";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(131, 130);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(49, 20);
+            this.label14.TabIndex = 86;
+            this.label14.Text = "Client";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(82, 87);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(98, 20);
+            this.label15.TabIndex = 85;
+            this.label15.Text = "SAP System";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(68, 44);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(112, 20);
+            this.label16.TabIndex = 84;
+            this.label16.Text = "SAP GUI Path";
+            // 
+            // txtPassword
+            // 
+            this.txtPassword.Location = new System.Drawing.Point(233, 210);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.ReadOnly = true;
+            this.txtPassword.Size = new System.Drawing.Size(198, 26);
+            this.txtPassword.TabIndex = 83;
+            this.txtPassword.Text = "pp99oo88!@1";
+            // 
+            // txtUser
+            // 
+            this.txtUser.Location = new System.Drawing.Point(233, 167);
+            this.txtUser.Name = "txtUser";
+            this.txtUser.ReadOnly = true;
+            this.txtUser.Size = new System.Drawing.Size(198, 26);
+            this.txtUser.TabIndex = 82;
+            this.txtUser.Text = "T991059";
+            // 
+            // txtClient
+            // 
+            this.txtClient.Location = new System.Drawing.Point(233, 124);
+            this.txtClient.Name = "txtClient";
+            this.txtClient.ReadOnly = true;
+            this.txtClient.Size = new System.Drawing.Size(198, 26);
+            this.txtClient.TabIndex = 81;
+            this.txtClient.Text = "750";
+            // 
+            // txtSapSystem
+            // 
+            this.txtSapSystem.Location = new System.Drawing.Point(233, 81);
+            this.txtSapSystem.Name = "txtSapSystem";
+            this.txtSapSystem.ReadOnly = true;
+            this.txtSapSystem.Size = new System.Drawing.Size(475, 26);
+            this.txtSapSystem.TabIndex = 80;
+            this.txtSapSystem.Text = "SP1 - ECC 6.0 Production [PS_PM_SD_GRP]";
+            // 
+            // txtSapGuiPath
+            // 
+            this.txtSapGuiPath.Location = new System.Drawing.Point(233, 38);
+            this.txtSapGuiPath.Name = "txtSapGuiPath";
+            this.txtSapGuiPath.ReadOnly = true;
+            this.txtSapGuiPath.Size = new System.Drawing.Size(475, 26);
+            this.txtSapGuiPath.TabIndex = 79;
+            this.txtSapGuiPath.Text = "C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPgui\\saplogon.exe";
             // 
             // Button4
             // 
@@ -338,16 +481,38 @@ namespace CloseActivities
             this.label11.Size = new System.Drawing.Size(0, 25);
             this.label11.TabIndex = 66;
             // 
+            // btnOpenSAP
+            // 
+            this.btnOpenSAP.Location = new System.Drawing.Point(15, 3);
+            this.btnOpenSAP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnOpenSAP.Name = "btnOpenSAP";
+            this.btnOpenSAP.Size = new System.Drawing.Size(220, 34);
+            this.btnOpenSAP.TabIndex = 59;
+            this.btnOpenSAP.Text = "Open SAP GUI";
+            this.btnOpenSAP.UseVisualStyleBackColor = true;
+            this.btnOpenSAP.Click += new System.EventHandler(this.btnOpenSAP_Click);
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.btnOpenSAP);
+            this.panel3.Location = new System.Drawing.Point(643, 27);
+            this.panel3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(250, 39);
+            this.panel3.TabIndex = 61;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1059, 603);
+            this.ClientSize = new System.Drawing.Size(1065, 603);
+            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel4);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.textBox7);
-            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -356,8 +521,11 @@ namespace CloseActivities
             this.Text = "Close Activities";
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -366,10 +534,10 @@ namespace CloseActivities
         #endregion
         //private Panel panel2;
         private Panel panel1;
-        private Button Button1;
+        private Button btnGetSQL;
         private Panel panel2;
-        private Button Button2;
-        private Panel panel3;
+        private Button btnLoadSQL;
+        private Panel panel5;
         private Button Button5;
         private Button Button4;
         private Button Button3;
@@ -393,6 +561,21 @@ namespace CloseActivities
         private Label label9;
         private Label label10;
         private Label label11;
+        private Panel panel4;
+        private TextBox txtOutput;
+        private Button btnOpenSapGui;
+        private Label label12;
+        private Label label13;
+        private Label label14;
+        private Label label15;
+        private Label label16;
+        private TextBox txtPassword;
+        private TextBox txtUser;
+        private TextBox txtClient;
+        private TextBox txtSapSystem;
+        private TextBox txtSapGuiPath;
+        private Button btnOpenSAP;
+        private Panel panel3;
     }
 }
 

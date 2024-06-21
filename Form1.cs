@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
+using SAP.Middleware.Connector;
 
 namespace CloseActivities
 {
@@ -23,6 +25,8 @@ namespace CloseActivities
             InitializeComponent();
             panel2.Visible = false;
             panel3.Visible = false;
+            panel4.Visible = false;
+            panel5.Visible = false;
         }
 
         private void Button1_Click_1(object sender, EventArgs e)
@@ -85,13 +89,13 @@ namespace CloseActivities
                     foreach (var value in cellValues)
                     {
                         panel2.Visible = true;
-                        panel3.Visible = true;
+                        panel5.Visible = true;
                         if (value == "" || value == " ")
                         {
                             //Label label1 = new Label();
                             label9.Text = ("Empty cell(s) found in Bire Excel file at row: " + row.RowIndex);
                             panel2.Visible = false;
-                            panel3.Visible = false;
+                            panel5.Visible = false;
                             shouldBreak = true;
                             break;
                         }
@@ -106,7 +110,8 @@ namespace CloseActivities
                 {
                     panel1.Visible = false;
                     panel2.Visible = true;
-                    panel3.Visible = false;
+                    panel5.Visible = false;
+                    panel4.Visible = false;
                     label11.Text = "Excel Bire contains no blank field";
                 }
             }
@@ -166,7 +171,7 @@ namespace CloseActivities
                         {
                             Connection = connection,
                             CommandType = CommandType.StoredProcedure,
-                            CommandText = "sp_frm_Insert_into_dbo_BIRE_NILEC",
+                            CommandText = "Insert_into_dbo_BIRE_NILEC",
                         };
 
                         SqlCmd.Parameters.AddWithValue("@dataTable", bireTable);
@@ -187,8 +192,10 @@ namespace CloseActivities
                 panel1.Visible = false;
                 panel2.Visible = false;
                 panel3.Visible = true;
+                panel4.Visible = false;
+                panel5.Visible = false;
 
-                //    Update_Info_Activitees();
+                
             }
         }
 
@@ -263,6 +270,58 @@ namespace CloseActivities
                     hasError = true;
                 }
             }
+        } 
+
+        private void btnOpenSAP_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Get the SAP GUI path and connection parameters from the text boxes
+                string sapGuiPath = txtSapGuiPath.Text;
+                string sapSystem = txtSapSystem.Text;
+                string client = txtClient.Text;
+                string user = txtUser.Text;
+                txtPassword.PasswordChar = '*';
+                string password = txtPassword.Text;
+
+                // Check if the SAP GUI path is provided
+                if (string.IsNullOrEmpty(sapGuiPath))
+                {
+                    txtOutput.Text = "Please provide the path to the SAP GUI executable.";
+                    return;
+                }
+
+                // Build the command-line arguments
+                string arguments = $"-system={sapSystem} -client={client} -user={user} -pw={password}";
+
+                // Start the SAP GUI process
+                Process.Start(sapGuiPath, arguments);
+
+                panel1.Visible = false;
+                panel2.Visible = false;
+                panel3.Visible = false;
+                panel4.Visible = false;
+                panel5.Visible = true;
+
+                // Display success message
+                ////txtOutput.Text = "SAP GUI opened successfully.";
+            }
+            catch (Exception ex)
+            {
+                // Display any errors
+                txtOutput.Text = $"Failed to open SAP GUI: {ex.Message}";
+            }
+
+            ////string directoryToOpen = @"C:\";
+
+            ////try
+            ////{
+            ////    Process.Start("saplogon.exe", directoryToOpen);
+            ////}
+            ////catch (Exception ex)
+            ////{
+            ////    MessageBox.Show($"An error occurred: {ex.Message}");
+            ////}
         }
     }
 }
