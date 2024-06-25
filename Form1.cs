@@ -1,15 +1,15 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 
+using SAPFEWSELib;
+
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
-using SAP.Middleware.Connector;
 
 namespace CloseActivities
 {
@@ -193,9 +193,7 @@ namespace CloseActivities
                 panel2.Visible = false;
                 panel3.Visible = true;
                 panel4.Visible = false;
-                panel5.Visible = false;
-
-                
+                panel5.Visible = false; 
             }
         }
 
@@ -270,58 +268,59 @@ namespace CloseActivities
                     hasError = true;
                 }
             }
-        } 
+        }
 
-        private void btnOpenSAP_Click(object sender, EventArgs e)
+        private void BtnOpenSAP_Click(object sender, EventArgs e)
         {
-            try
-            {
-                // Get the SAP GUI path and connection parameters from the text boxes
-                string sapGuiPath = txtSapGuiPath.Text;
-                string sapSystem = txtSapSystem.Text;
-                string client = txtClient.Text;
-                string user = txtUser.Text;
-                txtPassword.PasswordChar = '*';
-                string password = txtPassword.Text;
+            SAPActive.OpenSap("SP1 - ECC 6.0 Production [PS_PM_SD_GRP]");
+            SAPActive.Login("750", "T991059", "ee33ww22!@1", "EN");
+            SAPActive.SapSession.StartTransaction("VA03");
+        }
+        public class SAPActive
+        {
+            public static GuiApplication SapGuiApp { get; set; }
+            public static GuiConnection SapConnection { get; set; }
+            public static GuiSession SapSession { get; set; }
 
-                // Check if the SAP GUI path is provided
-                if (string.IsNullOrEmpty(sapGuiPath))
+            public static void OpenSap(string env)
+            {
+                SAPActive.SapGuiApp = new GuiApplication();
+
+                string connectString = null;
+                if (env.ToUpper().Equals("DEFAULT"))
                 {
-                    txtOutput.Text = "Please provide the path to the SAP GUI executable.";
-                    return;
+                    //connectString = "1.0 Test ERP (DEFAULT)";
                 }
-
-                // Build the command-line arguments
-                string arguments = $"-system={sapSystem} -client={client} -user={user} -pw={password}";
-
-                // Start the SAP GUI process
-                Process.Start(sapGuiPath, arguments);
-
-                panel1.Visible = false;
-                panel2.Visible = false;
-                panel3.Visible = false;
-                panel4.Visible = false;
-                panel5.Visible = true;
-
-                // Display success message
-                ////txtOutput.Text = "SAP GUI opened successfully.";
+                else
+                {
+                    connectString = env;
+                }
+                SAPActive.SapConnection = SAPActive.SapGuiApp.OpenConnection(connectString, Sync: true); //creates connection
+                SAPActive.SapSession = (GuiSession)SAPActive.SapConnection.Sessions.Item(0); //creates the Gui session off the connection you made
             }
-            catch (Exception ex)
+
+            public static void Login(string myclient, string mylogin, string mypass, string mylang)
             {
-                // Display any errors
-                txtOutput.Text = $"Failed to open SAP GUI: {ex.Message}";
+                GuiTextField client = (GuiTextField)SAPActive.SapSession.ActiveWindow.FindByName("RSYST-MANDT", "GuiTextField");
+                GuiTextField login = (GuiTextField)SAPActive.SapSession.ActiveWindow.FindByName("RSYST-BNAME", "GuiTextField");
+                GuiTextField pass = (GuiTextField)SAPActive.SapSession.ActiveWindow.FindByName("RSYST-BCODE", "GuiPasswordField");
+                GuiTextField language = (GuiTextField)SAPActive.SapSession.ActiveWindow.FindByName("RSYST-LANGU", "GuiTextField");
+
+                client.SetFocus();
+                client.Text = myclient;
+                login.SetFocus();
+                login.Text = mylogin;
+                pass.SetFocus();
+                pass.Text = mypass;
+                language.SetFocus();
+                language.Text = mylang;
+
+                //Press the green checkmark button which is about the same as the enter key 
+                GuiButton btn = (GuiButton)SapSession.FindById("/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[0]");
+                btn.SetFocus();
+                btn.Press();
+
             }
-
-            ////string directoryToOpen = @"C:\";
-
-            ////try
-            ////{
-            ////    Process.Start("saplogon.exe", directoryToOpen);
-            ////}
-            ////catch (Exception ex)
-            ////{
-            ////    MessageBox.Show($"An error occurred: {ex.Message}");
-            ////}
         }
     }
 }
