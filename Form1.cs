@@ -20,15 +20,18 @@ namespace CloseActivities
         public SqlConnection connection;
         bool hasError = false;
         DataTable bireTable;
+        public string language;
+
         public Form1()
         {
             InitializeComponent();
             panel2.Visible = false;
             panel3.Visible = false;
             panel4.Visible = false;
+            RadioButton1.Checked = true; 
             panel5.Visible = false;
-        }
-
+        } 
+        
         private void BtnGetSQL_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
@@ -58,7 +61,7 @@ namespace CloseActivities
             {
                 foreach (string field in emptyFields)
                 {
-                    label9.Text = ("Empty cell(s) found in Bire Excel: " + field);
+                    label9.Text = (language == "1") ? "Cellule(s) vide(s) trouvée(s) dans Bire Excel :" + field : "Empty cell(s) found in Bire Excel: " + field;
                 }
             }
             else
@@ -67,7 +70,7 @@ namespace CloseActivities
                 panel2.Visible = true;
                 panel5.Visible = false;
                 panel4.Visible = false;
-                label11.Text = ("No empty fields found.");
+                label11.Text = (language == "1") ? "Aucun champ vide trouvé." : "No empty fields found.";
             }
         }
 
@@ -141,7 +144,7 @@ namespace CloseActivities
             }
             if (!hasError)
             {
-                label11.Text = "Excel file successfully transferred to SQL Bire table";
+                label11.Text = (language == "1") ? "Fichier Excel transféré avec succès vers la table SQL Bire" : "Excel file successfully transferred to SQL Bire table";
                 panel1.Visible = false;
                 panel2.Visible = false;
                 panel3.Visible = true;
@@ -220,6 +223,53 @@ namespace CloseActivities
                 btn.SetFocus();
                 btn.Press();
             }
+        }
+
+        public void RadioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton radioButton = sender as RadioButton;
+            language = "1";
+            BtnGetSQL.Text = "Choisir le Fichier Excel";
+            BtnLoadSQL.Text = "Télécharger dans SQL Server";
+            BtnOpenSAP.Text = "Ouvrir SAP GUI";
+            label14.Text = "Entrez identification SAP";
+            label12.Text = "Mot de Passe:";
+            BtnOpenSapGui.Text = "Connecter";
+            label1.Text = "Enregistrer #:";
+            label2.Text = "Complété:";
+            label3.Text = "Réseau:";
+            label4.Text = "Activité:";
+            label5.Text = "Statut:";
+            label6.Text = "Début:";
+            label7.Text = "Fin:";
+            label13.Text = "SAP ID:";
+            label12.Text = "Mot de Passe:";
+            Button3.Text = "1- Executer confirmation réseau par activité";
+            Button4.Text = "2-Executer  (TECO)";
+            Button5.Text = "Remettre TECO (retour en arrière)";
+        }
+
+        private void RadioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            language = "2";
+            BtnGetSQL.Text = "Choose Excel File";
+            BtnLoadSQL.Text = "Upload to SQL Server";
+            BtnOpenSAP.Text = "Open SAP GUI";
+            label14.Text = "Enter SAP Credential";
+            label12.Text = "Password:";
+            BtnOpenSapGui.Text = "Connect";
+            label1.Text = "Record #:";
+            label2.Text = "Completed:";
+            label3.Text = "Network:";
+            label4.Text = "Activity:";
+            label5.Text = "Status:";
+            label6.Text = "Start:";
+            label7.Text = "End:";
+            label13.Text = "SAP ID:";
+            label12.Text = "Password:";
+            Button3.Text = "1- Run network confirmation by activity";
+            Button4.Text = "2-Execute (TECO)";
+            Button5.Text = "Reset TECO (backtrack)";
         }
     }
 }
