@@ -314,7 +314,6 @@ namespace CloseActivities
             this.BtnOpenSapGui.Name = "BtnOpenSapGui";
             this.BtnOpenSapGui.Size = new System.Drawing.Size(129, 40);
             this.BtnOpenSapGui.TabIndex = 89;
-            this.BtnOpenSapGui.Text = "Connect";
             this.BtnOpenSapGui.UseVisualStyleBackColor = true;
             this.BtnOpenSapGui.Click += new System.EventHandler(this.BtnOpenSapGui_Click);
             // 
@@ -452,8 +451,8 @@ namespace CloseActivities
             this.Controls.Add(this.textBox7);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel5);
+            this.Controls.Add(this.panel4);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
