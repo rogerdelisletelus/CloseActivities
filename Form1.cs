@@ -19,8 +19,12 @@ namespace CloseActivities
         public SqlCommand SqlCmd;
         public SqlConnection connection;
         bool hasError = false;
+        bool msg1 = false;
+        bool msg2 = false;
+        bool msg3 = false;
         DataTable bireTable;
-        public string language;
+        public string lang;
+        public string gbfield;
 
         public Form1()
         {
@@ -28,10 +32,11 @@ namespace CloseActivities
             panel2.Visible = false;
             panel3.Visible = false;
             panel4.Visible = false;
-            RadioButton1.Checked = true; 
+            RadioButton1.Checked = true;
+            lang = "1";
             panel5.Visible = false;
-        } 
-        
+        }
+
         private void BtnGetSQL_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
@@ -61,16 +66,19 @@ namespace CloseActivities
             {
                 foreach (string field in emptyFields)
                 {
-                    label9.Text = (language == "1") ? "Cellule(s) vide(s) trouvée(s) dans Bire Excel :" + field : "Empty cell(s) found in Bire Excel: " + field;
+                    msg2 = true;
+                    gbfield = field;
+                    label9.Text = (lang == "1") ? "Cellule(s) vide(s) trouvée(s) dans Bire Excel :" + field : "Empty cell(s) found in Bire Excel: " + field;
                 }
             }
             else
             {
+                msg1 = true;
                 panel1.Visible = false;
                 panel2.Visible = true;
                 panel5.Visible = false;
                 panel4.Visible = false;
-                label11.Text = (language == "1") ? "Aucun champ vide trouvé." : "No empty fields found.";
+                label11.Text = (lang == "1") ? "Aucun champ vide trouvé." : "No empty fields found.";
             }
         }
 
@@ -144,7 +152,8 @@ namespace CloseActivities
             }
             if (!hasError)
             {
-                label11.Text = (language == "1") ? "Fichier Excel transféré avec succès vers la table SQL Bire" : "Excel file successfully transferred to SQL Bire table";
+                msg3 = true;
+                label11.Text = (lang == "1") ? "Fichier Excel transféré avec succès vers la table SQL Bire" : "Excel file successfully transferred to SQL Bire table";
                 panel1.Visible = false;
                 panel2.Visible = false;
                 panel3.Visible = true;
@@ -169,7 +178,7 @@ namespace CloseActivities
         {
             SAPActive.OpenSap("SP1 - ECC 6.0 Production [PS_PM_SD_GRP]");
             SAPActive.Login("750", "T991059", "ee33ww22!@1", "EN");
-            SAPActive.SapSession.StartTransaction("cn22"); // ("VA01");
+            SAPActive.SapSession.StartTransaction("cn22");
 
             panel1.Visible = false;
             panel2.Visible = false;
@@ -228,7 +237,7 @@ namespace CloseActivities
         public void RadioButton1_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton radioButton = sender as RadioButton;
-            language = "1";
+            lang = "1";
             BtnGetSQL.Text = "Choisir le Fichier Excel";
             BtnLoadSQL.Text = "Télécharger dans SQL Server";
             BtnOpenSAP.Text = "Ouvrir SAP GUI";
@@ -246,12 +255,25 @@ namespace CloseActivities
             label12.Text = "Mot de Passe:";
             Button3.Text = "1- Executer confirmation réseau par activité";
             Button4.Text = "2-Executer  (TECO)";
-            Button5.Text = "Remettre TECO (retour en arrière)";
+            Button5.Text = "Remettre TECO ( retour en arrière )"; this.Refresh();
+
+            if (msg1)
+            {
+                label11.Text = "Aucun champ vide trouvé.";
+            }
+            if (msg2)
+            {
+                label9.Text = "Cellule(s) vide(s) trouvée(s) dans Bire Excel :" + gbfield;
+            }
+            if (msg3)
+            {
+                label11.Text = "Fichier Excel transféré avec succès vers la table SQL Bire";
+            }
         }
 
         private void RadioButton2_CheckedChanged(object sender, EventArgs e)
         {
-            language = "2";
+            lang = "2";
             BtnGetSQL.Text = "Choose Excel File";
             BtnLoadSQL.Text = "Upload to SQL Server";
             BtnOpenSAP.Text = "Open SAP GUI";
@@ -269,7 +291,20 @@ namespace CloseActivities
             label12.Text = "Password:";
             Button3.Text = "1- Run network confirmation by activity";
             Button4.Text = "2-Execute (TECO)";
-            Button5.Text = "Reset TECO (backtrack)";
+            Button5.Text = "Reset TECO ( backtrack )"; this.Refresh();
+
+            if (msg1)
+            {
+                label11.Text = "No empty fields found.";
+            }
+            if (msg2)
+            {
+                label9.Text = "Empty cell(s) found in Bire Excel: " + gbfield;
+            }
+            if (msg3)
+            {
+                label11.Text = "Excel file successfully transferred to SQL Bire table";
+            }
         }
     }
 }
