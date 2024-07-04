@@ -22,9 +22,12 @@ namespace CloseActivities
         bool msg1 = false;
         bool msg2 = false;
         bool msg3 = false;
+        bool msg4 = false;
         DataTable bireTable;
         public string lang;
         public string gbfield;
+
+        public Object gridview;
 
         public Form1()
         {
@@ -62,6 +65,8 @@ namespace CloseActivities
             List<string> emptyFields = GetEmptyFields(bireTable);
             label9.Text = "";
             label11.Text = "";
+            msg1 = false;
+            msg2 = false;
             if (emptyFields.Count > 0)
             {
                 foreach (string field in emptyFields)
@@ -78,7 +83,7 @@ namespace CloseActivities
                 panel2.Visible = true;
                 panel5.Visible = false;
                 panel4.Visible = false;
-                label11.Text = (lang == "1") ? "Aucun champ vide trouvé." : "No empty fields found.";
+                label11.Text = (lang == "1") ? "Aucune cellule(s) vide trouvé." : "No empty cell(s) found.";
             }
         }
 
@@ -125,6 +130,10 @@ namespace CloseActivities
         }
         public void BtnLoadSQL_Click(object sender, EventArgs e)
         {
+            msg1 = false;
+            msg2 = false;
+            msg3 = false;
+            msg4 = false;
             if (bireTable != null)
             {
                 using (connection = new SqlConnection(connectionString))
@@ -142,10 +151,13 @@ namespace CloseActivities
                         connection.Open();
                         SqlCmd.ExecuteNonQuery();
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
+                        msg4 = true;
                         label11.Text = "";
-                        label10.Text = (ex.Message);
+                        //  label10.Text = (ex.Message);
+                        label10.Text = (lang == "1") ? "Erreur dans la procédure: Insert_into_dbo_BIRE_NILEC" : "Error in procedure: Insert_into_dbo_BIRE_NILEC";
+
                         hasError = true;
                     }
                 }
@@ -178,7 +190,6 @@ namespace CloseActivities
         {
             SAPActive.OpenSap("SP1 - ECC 6.0 Production [PS_PM_SD_GRP]");
             SAPActive.Login("750", "T991059", "ee33ww22!@1", "EN");
-            SAPActive.SapSession.StartTransaction("cn22");
 
             panel1.Visible = false;
             panel2.Visible = false;
@@ -188,15 +199,18 @@ namespace CloseActivities
             label11.Text = "";
             textBox7.Visible = false;
         }
+
+
         public class SAPActive
         {
             public static GuiApplication SapGuiApp { get; set; }
             public static GuiConnection SapConnection { get; set; }
             public static GuiSession SapSession { get; set; }
+            public static object GlobalVariables { get; private set; }
 
             public static void OpenSap(string env)
             {
-                SAPActive.SapGuiApp = new GuiApplication();
+                SapGuiApp = new GuiApplication();
 
                 string connectString = null;
                 if (env.ToUpper().Equals("DEFAULT"))
@@ -207,16 +221,19 @@ namespace CloseActivities
                 {
                     connectString = env;
                 }
-                SAPActive.SapConnection = SAPActive.SapGuiApp.OpenConnection(connectString, Sync: true); //creates connection
-                SAPActive.SapSession = (GuiSession)SAPActive.SapConnection.Sessions.Item(0); //creates the Gui session off the connection you made
+                SapConnection = SapGuiApp.OpenConnection(connectString, Sync: true); //creates connection
+                SapSession = (GuiSession)SapConnection.Sessions.Item(0); //creates the Gui session off the connection you made 
+
+                SapSession.RecordFile = @"SampleScript.vbs";
+                SapSession.Record = true;
             }
 
             public static void Login(string myclient, string mylogin, string mypass, string mylang)
             {
-                GuiTextField client = (GuiTextField)SAPActive.SapSession.ActiveWindow.FindByName("RSYST-MANDT", "GuiTextField");
-                GuiTextField login = (GuiTextField)SAPActive.SapSession.ActiveWindow.FindByName("RSYST-BNAME", "GuiTextField");
-                GuiTextField pass = (GuiTextField)SAPActive.SapSession.ActiveWindow.FindByName("RSYST-BCODE", "GuiPasswordField");
-                GuiTextField language = (GuiTextField)SAPActive.SapSession.ActiveWindow.FindByName("RSYST-LANGU", "GuiTextField");
+                GuiTextField client = (GuiTextField)SapSession.ActiveWindow.FindByName("RSYST-MANDT", "GuiTextField");
+                GuiTextField login = (GuiTextField)SapSession.ActiveWindow.FindByName("RSYST-BNAME", "GuiTextField");
+                GuiTextField pass = (GuiTextField)SapSession.ActiveWindow.FindByName("RSYST-BCODE", "GuiPasswordField");
+                GuiTextField language = (GuiTextField)SapSession.ActiveWindow.FindByName("RSYST-LANGU", "GuiTextField");
 
                 client.SetFocus();
                 client.Text = myclient;
@@ -227,16 +244,30 @@ namespace CloseActivities
                 language.SetFocus();
                 language.Text = mylang;
 
-                //Press the green checkmark button which is about the same as the enter key 
-                GuiButton btn = (GuiButton)SapSession.FindById("/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[0]");
-                btn.SetFocus();
-                btn.Press();
+                ClickButton(SapSession);
+
+                SapSession.StartTransaction("cn22");
+                GuiCTextField client3 = (GuiCTextField)SapSession.ActiveWindow.FindByName("CAUFVD-AUFNR", "GuiCTextField");
+                client3.SetFocus();
+                client3.Text = "2793500";
+
+                ClickButton(SapSession); 
+
+                //var scriptPath = SapSession.RecordFile;
+                SapSession.Record = false;
             }
         }
 
+        public static void ClickButton(GuiSession SapSession)
+        {
+            //Press the green checkmark button 
+            GuiButton btn = (GuiButton)SapSession.FindById("/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[0]");
+            btn.SetFocus();
+            btn.Press();
+        }
         public void RadioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            RadioButton radioButton = sender as RadioButton;
+            //RadioButton radioButton = sender as RadioButton;
             lang = "1";
             BtnGetSQL.Text = "Choisir le Fichier Excel";
             BtnLoadSQL.Text = "Télécharger dans SQL Server";
@@ -268,6 +299,10 @@ namespace CloseActivities
             if (msg3)
             {
                 label11.Text = "Fichier Excel transféré avec succès vers la table SQL Bire";
+            }
+            if (msg4)
+            {
+                label10.Text = "Erreur dans la procédure: Insert_into_dbo_BIRE_NILEC";
             }
         }
 
@@ -304,6 +339,10 @@ namespace CloseActivities
             if (msg3)
             {
                 label11.Text = "Excel file successfully transferred to SQL Bire table";
+            }
+            if (msg4)
+            {
+                label10.Text = "Error in procedure: Insert_into_dbo_BIRE_NILEC";
             }
         }
     }
