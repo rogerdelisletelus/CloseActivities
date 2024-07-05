@@ -373,7 +373,7 @@ namespace CloseActivities
             this.label9.ForeColor = System.Drawing.Color.Red;
             this.label9.Location = new System.Drawing.Point(258, 132);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(0, 28);
+            this.label9.Size = new System.Drawing.Size(0, 25);
             this.label9.TabIndex = 64;
             // 
             // label10
@@ -393,7 +393,7 @@ namespace CloseActivities
             this.label11.ForeColor = System.Drawing.Color.LimeGreen;
             this.label11.Location = new System.Drawing.Point(218, 134);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(0, 28);
+            this.label11.Size = new System.Drawing.Size(0, 25);
             this.label11.TabIndex = 66;
             // 
             // BtnOpenSAP
@@ -461,8 +461,9 @@ namespace CloseActivities
             this.Controls.Add(this.textBox7);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel5);
+            this.Controls.Add(this.panel4);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
