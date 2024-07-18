@@ -25,8 +25,9 @@ namespace CloseActivities
         bool msg4 = false;
         DataTable bireTable;
         public string lang;
-        public string gbfield; 
-
+        public string gbfield;
+        public static int noerror = 0;
+        public static string SAP_stat;
         public Object gridview;
 
         public Form1()
@@ -39,9 +40,7 @@ namespace CloseActivities
             lang = "1";
             panel2.Visible = false;
             panel3.Visible = false;
-            panel4.Visible = false;
-
-
+            panel4.Visible = true;
             panel5.Visible = false;
         }
 
@@ -211,7 +210,7 @@ namespace CloseActivities
         {
             public static GuiApplication SapGuiApp { get; set; }
             public static GuiConnection SapConnection { get; set; }
-            public static GuiSession SapSession { get; set; }
+            public static GuiSession session { get; set; }
             public static object GlobalVariables { get; private set; }
 
             public static void OpenSap(string env)
@@ -228,18 +227,18 @@ namespace CloseActivities
                     connectString = env;
                 }
                 SapConnection = SapGuiApp.OpenConnection(connectString, Sync: true); //creates connection
-                SapSession = (GuiSession)SapConnection.Sessions.Item(0); //creates the Gui session off the connection you made 
+                session = (GuiSession)SapConnection.Sessions.Item(0); //creates the Gui session off the connection you made 
 
-                SapSession.RecordFile = @"SampleScript.vbs";
-                SapSession.Record = true;
+                session.RecordFile = @"SampleScript.vbs";
+                session.Record = true;
             }
 
             public static void Login(string myclient, string mylogin, string mypass, string mylang)
             {
-                GuiTextField client = (GuiTextField)SapSession.ActiveWindow.FindByName("RSYST-MANDT", "GuiTextField");
-                GuiTextField login = (GuiTextField)SapSession.ActiveWindow.FindByName("RSYST-BNAME", "GuiTextField");
-                GuiTextField pass = (GuiTextField)SapSession.ActiveWindow.FindByName("RSYST-BCODE", "GuiPasswordField");
-                GuiTextField language = (GuiTextField)SapSession.ActiveWindow.FindByName("RSYST-LANGU", "GuiTextField");
+                GuiTextField client = (GuiTextField)session.ActiveWindow.FindByName("RSYST-MANDT", "GuiTextField");
+                GuiTextField login = (GuiTextField)session.ActiveWindow.FindByName("RSYST-BNAME", "GuiTextField");
+                GuiTextField pass = (GuiTextField)session.ActiveWindow.FindByName("RSYST-BCODE", "GuiPasswordField");
+                GuiTextField language = (GuiTextField)session.ActiveWindow.FindByName("RSYST-LANGU", "GuiTextField");
 
                 client.SetFocus();
                 client.Text = myclient;
@@ -250,64 +249,363 @@ namespace CloseActivities
                 language.SetFocus();
                 language.Text = mylang;
 
-                ClickButton(SapSession);
+                ClickButton(session);
 
-                ProceedToCN22(SapSession);
+                ProceedToCN25(session);
 
-                SapSession.Record = false;
+                session.Record = false;
             }
         }
-        public static void ProceedToCN22(GuiSession SapSession)
+        public static void ProceedToCN25(GuiSession session)
         {
+            GuiButton wnd = null;
+            SAP_stat = string.Empty;
             string activityIn;
             //Start cn25
-            SapSession.StartTransaction("cn25");
+            session.StartTransaction("cn25");
+
+            //GuiTextField commandField = (GuiTextField)session.FindById("wnd[0]/tbar[0]/okcd");
+            //commandField.Text = "cn25";
+
+            // Send the Enter key (VKey 0)
+            //GuiModalWindow mainWindow = (GuiModalWindow)session.FindById("wnd[0]");
+            //mainWindow.SendVKey(0);
 
             //Insert network number
-            GuiCTextField network = (GuiCTextField)SapSession.ActiveWindow.FindByName("CORUF-AUFNR", "GuiCTextField");
+            GuiCTextField network = (GuiCTextField)session.ActiveWindow.FindByName("CORUF-AUFNR", "GuiCTextField");
             network.SetFocus();
-            network.Text = "2920606";
+            network.Text = "2911985";
 
             //insert activity
-            GuiTextField activity = (GuiTextField)SapSession.ActiveWindow.FindByName("CORUF-VORNR", "GuiTextField");
-            activity.SetFocus();
-            activity.Text = "CPRD";
-            activityIn = "CPRD";
+            GuiTextField activity25 = (GuiTextField)session.ActiveWindow.FindByName("CORUF-VORNR", "GuiTextField");
+            activity25.SetFocus();
+            activity25.Text = "EEXP";
+            activityIn = activity25.Text;
 
-            //Press the green checkmark button
-            ClickButton(SapSession);
+            ClickButton(session);
 
-            //Check the confirmation checkbox
-            GuiCheckBox checkBox = (GuiCheckBox)SapSession.ActiveWindow.FindByName("AFRUD-AUERU", "GuiCheckBox");
-            checkBox.Selected = true;
-            checkBox.SetFocus();
+            //var wnd1 = session.FindById("wnd[0]/sbar").Type;
+            //var wnd4 = session.FindById("wnd[0]/sbar").Id;
+            //var wnd6 = session.FindById("wnd[0]/sbar").Name; 
 
-            //Save the page
-            GuiButton btnSave = (GuiButton)SapSession.FindById("/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[11]");
-            btnSave.SetFocus();
-            btnSave.Press();
+
+
+            try
+            {
+                // Get the status bar text
+                GuiStatusbar statusBar = (GuiStatusbar)session.FindById("wnd[0]/sbar");
+                string statusBarText = statusBar.Text;
+
+                // Check if the status bar text contains "completed"
+                if (statusBarText.Contains("completed"))
+                {
+                    noerror = 3;
+                    goto ContinueExecution;
+                }
+            }
+            catch (Exception ex)
+            {
+                var tatt = ex.Message; // Handle the exception (optional)
+            }
+
+            try
+            {
+                // Get the status bar text
+                GuiStatusbar statusBar = (GuiStatusbar)session.FindById("wnd[0]/sbar");
+                string statusBarText = statusBar.Text;
+
+                // Print the status bar text to the console
+                //MessageBox.Show(statusBarText);
+            }
+            catch (Exception ex)
+            {
+                var tastt = ex.Message; // Handle the exception (optional)
+                // This mimics the behavior of 'On Error Resume Next' by ignoring the error
+            } 
+
+            try
+            {
+                // Find the window by ID
+                wnd = (GuiButton)session.FindById("wnd[2]/tbar[0]/btn[43]");
+            }
+            catch (Exception ex)
+            {
+                var ttt = ex.Message; // Handle the exception (optional)
+            }
+
+            if (wnd != null)
+            {
+                try
+                {
+                    // Check the text of the window
+
+                    GuiModalWindow wnd1 = (GuiModalWindow)session.FindById("wnd[1]");
+                    if (wnd1.Text == "Status management: Confirm transaction" || wnd1.Text == "Gestion des statuts : Confirmer opération")
+                    {
+                        // Press the button
+                        GuiButton btnOpt1 = (GuiButton)session.FindById("wnd[1]/usr/btnOPTION1");
+                        btnOpt1.SetFocus();
+                        btnOpt1.Press();
+                        // ((GuiButton)session.FindById("wnd[1]/usr/btnOPTION1")).Press();
+
+                        try
+                        {
+                            // Find the window by ID again
+                            wnd = (GuiButton)session.FindById("wnd[2]/tbar[0]/btn[43]");
+                        }
+                        catch (Exception ex)
+                        {
+                            var ttt2 = ex.Message; // Handle the exception (optional)
+                        }
+
+                        if (wnd != null)
+                        {
+                            try
+                            {
+                                // Check if the text contains "Technical Information"
+                                GuiButton btn = (GuiButton)session.FindById("wnd[2]/tbar[0]/btn[43]");
+                                if (btn.Text.Contains("Technical Information"))
+                                {
+                                    // Press the buttons
+                                    ((GuiButton)session.FindById("wnd[1]/usr/btnOPTION1")).Press();
+                                    ((GuiButton)session.FindById("wnd[2]/tbar[0]/btn[12]")).Press();
+                                    ((GuiButton)session.FindById("wnd[1]/usr/btnOPTION2")).Press();
+
+                                    // Get the status text
+                                    GuiStatusbar SAP_stat = session.FindById("wnd[0]/sbar") as GuiStatusbar;
+                                    //SAP_stat = session.FindById("wnd[0]/sbar").Text;
+                                    noerror = 4;
+                                    goto ContinueExecution;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                var ttt22 = ex.Message;  // Handle the exception (optional)
+                            }
+                        }
+
+                        noerror = 0;
+                        goto ContinueExecution;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var ttt32 = ex.Message;  // Handle the exception (optional)
+                }
+            }
+
+            try
+            {
+                // Check the text of the window
+                GuiModalWindow wnd1 = (GuiModalWindow)session.FindById("wnd[1]");
+                if (wnd1.Text == "Status management: Confirm order" || wnd1.Text == "Gestion des statuts : Confirmer ordre")
+                {
+                    // Press the button
+                    GuiButton btnOpt1 = (GuiButton)session.FindById("wnd[1]/usr/btnOPTION1");
+                    btnOpt1.SetFocus();
+                    btnOpt1.Press();
+                    //((GuiButton)session.FindById("wnd[1]/usr/btnOPTION1")).Press();
+                    noerror = 0;
+                    goto ContinueExecution;
+                }
+            }
+            catch (Exception ex)
+            {
+                var ttt32a = ex.Message;  // Handle the exception (optional)
+            }
+
+
+            try
+            {
+                // Check the text of the window
+                GuiModalWindow wnd1 = (GuiModalWindow)session.FindById("wnd[1]");
+                if (wnd1.Text == "Warning")
+                {
+                    // Press the button
+                    ((GuiButton)session.FindById("wnd[1]/usr/btnOPTION1")).Press();
+
+                    // Get the status text
+                    GuiStatusbar SAP_stat = session.FindById("wnd[0]/sbar") as GuiStatusbar;
+                    //SAP_stat = session.FindById("wnd[0]/sbar").Text;
+                    noerror = 2;
+                    goto ContinueExecution;
+                }
+            }
+            catch (Exception ex)
+            {
+                var ttat32a = ex.Message;// Handle the exception (optional)
+            }
+
+
+            try
+            {
+                // Select the checkbox
+                GuiCheckBox chk = (GuiCheckBox)session.ActiveWindow.FindByName("AFRUD-AUERU", "GuiCheckBox");
+                //GuiCheckbox chk = (GuiCheckbox)session.FindById("wnd[1]/usr/chkAFRUD-AUERU");
+                chk.Selected = true;
+
+                // Set focus to the checkbox
+                chk.SetFocus();
+
+                // Press the button
+                ((GuiButton)session.FindById("wnd[1]/tbar[0]/btn[3]")).Press();
+
+                // Check the text of the window
+                GuiModalWindow wnd1 = (GuiModalWindow)session.FindById("wnd[1]");
+                if (wnd1.Text == "Warning")
+                {
+                    // Press the button
+                    ((GuiButton)session.FindById("wnd[1]/usr/btnOPTION1")).Press();
+
+                    // Get the status text
+                    GuiStatusbar SAP_stat = session.FindById("wnd[0]/sbar") as GuiStatusbar;
+                    // SAP_stat = session.FindById("wnd[0]/sbar").Text;
+                    noerror = 2;
+                    goto ContinueExecution;
+                }
+            }
+            catch (Exception ex)
+            {
+                var tt32a = ex.Message; // Handle the exception (optional)
+            }
+
+
+            try
+            {
+                // Check the text of the window
+                GuiModalWindow wnd2b = (GuiModalWindow)session.FindById("wnd[2]");
+                if (wnd2b.Text == "Back")
+                {
+                    // Press the button
+                    ((GuiButton)session.FindById("wnd[2]/usr/btnSPOP-OPTION1")).Press();
+                    noerror = 0;
+                    goto ContinueExecution;
+                }
+            }
+            catch (Exception ex)
+            {
+                var tt3z2a = ex.Message; // Handle the exception (optional)
+            }
+
+            try
+            {
+                // Get the text of the window and trim it
+                GuiModalWindow wnd2c = (GuiModalWindow)session.FindById("wnd[2]");
+                string wnd2Text = wnd2c.Text.Trim();
+
+                // Check if the text is "Information" or "Warning"
+                if (wnd2Text == "Information" || wnd2Text == "Warning")
+                {
+                    noerror = 0;
+
+                    // Press the button twice
+                    ((GuiButton)session.FindById("wnd[2]/tbar[0]/btn[0]")).Press();
+                    ((GuiButton)session.FindById("wnd[2]/tbar[0]/btn[0]")).Press();
+                }
+            }
+            catch (Exception ex)
+            {
+                var tt3za2a = ex.Message;// Handle the exception (optional)
+            }
+
+            try
+            {
+                // Get the text of the window and trim it
+                GuiModalWindow wnd1 = (GuiModalWindow)session.FindById("wnd[1]");
+                string wnd1Text = wnd1.Text.Trim();
+
+                // Check if the text is "Warning" or "Information"
+                if (wnd1Text == "Warning" || wnd1Text == "Information")
+                {
+                    // Press the button
+                    ((GuiButton)session.FindById("wnd[1]/usr/btnOPTION1")).Press();
+
+                    // Get the status text
+                    GuiStatusbar SAP_stat = session.FindById("wnd[0]/sbar") as GuiStatusbar;
+                    //SAP_stat = session.FindById("wnd[0]/sbar").Text;
+                    noerror = 2;
+                    goto ContinueExecution;
+                }
+            }
+            catch (Exception ex)
+            {
+                var t3za2a = ex.Message; // Handle the exception (optional)
+            }
+
+            ContinueExecution:
+
+            //if (noerror < 1)
+            //{
+            //    rs.Edit();
+            //    //rs.status = session.FindById("wnd[0]/sbar").Text;
+            //    GuiStatusbar SAP_stat = session.FindById("wnd[0]/sbar") as GuiStatusbar;
+
+            //   // string ggg = SAP_stat.ToString();
+
+            //    if (SAP_stat.ToString() == "S" || SAP_stat.ToString() == "")
+
+            //   // if (session.FindById("wnd[0]/sbar").MessageType == "S" || session.FindById("wnd[0]/sbar").MessageType == "")
+            //    {
+            //        rs.Action = "go_close";
+            //        rs.GO_ferme = "DONE";
+            //        rs.SAP_status = SAP_stat;
+            //        this.reseau = rs.Network;
+            //        rs.Update();
+            //    }
+            //}
+
+
+
+
+            ////Save the page
+            //GuiButton btnSave = (GuiButton)session.FindById("/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[11]");
+            //btnSave.SetFocus();
+            //btnSave.Press();
+
+
+            //GuiModalWindow ModalWindow1 = (GuiModalWindow)session.ActiveWindow.FindById("/app/con[0]/ses[0]/wnd[1]", "GuiModalWindow");
+            //if (ModalWindow1.Text == "Status management: Confirm transaction" || ModalWindow1.Text == "Gestion des statuts : Confirmer opération")
+            //{
+            //    GuiButton btnOpt = (GuiButton)session.FindById("wnd[1]/usr/btnOPTION1");
+            //    btnOpt.SetFocus();
+            //    btnOpt.Press();
+            //}
+
+
+
+
 
             //re-insert activity
-            GuiTextField activity22 = (GuiTextField)SapSession.ActiveWindow.FindByName("CORUF-VORNR", "GuiTextField");
-            activity22.SetFocus();
-            activity22.Text = activityIn; // "CPRD";
+            //GuiTextField activity22 = (GuiTextField)session.ActiveWindow.FindByName("CORUF-VORNR", "GuiTextField");
+            //activity22.SetFocus();
+            //activity22.Text = activityIn;
+
+            //ClickButton(session);
 
             //Start cn22
-            SapSession.StartTransaction("cn22");
+            //session.StartTransaction("cn22");
 
             //Press the green checkmark button
-            ClickButton(SapSession); 
-            
+            //ClickButton(session);
+
+
         }
-        public static void ClickButton(GuiSession SapSession)
+        public static void ClickButton(GuiSession session)
         {
             //Press the green checkmark button 
-            GuiButton btn = (GuiButton)SapSession.FindById("/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[0]");
-            btn.SetFocus();
-            btn.Press();
+            try
+            {
+                GuiButton btn = (GuiButton)session.FindById("/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[0]");
+                btn.SetFocus();
+                btn.Press();
+            }
+            catch (Exception ex)
+            {
 
+                var tttlbl = ex.Message;
+            }
             //Press the back arrow 
-            //GuiButton btn2 = (GuiButton)SapSession.FindById("/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[3]");
+            //GuiButton btn2 = (GuiButton)session.FindById("/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[3]");
             //btn2.SetFocus();
             //btn2.Press();
         }
@@ -359,5 +657,46 @@ namespace CloseActivities
         {
             lang = "2";
         }
+
+        static void Translate(string[] args)
+        {
+            // Initialize the SAP GUI scripting engine
+            GuiApplication sapGuiApp = new GuiApplication();
+            GuiConnection sapConnection = (GuiConnection)sapGuiApp.Connections.Item(0);
+            GuiSession session = sapConnection.Children.Item(0) as GuiSession;
+
+            // Find the status bar text
+            GuiStatusbar statusBar = session.FindById("wnd[0]/sbar") as GuiStatusbar;
+            string statusBarText = statusBar.Text;
+
+            // Output the status bar text
+            Console.WriteLine("Status Bar Text: " + statusBarText);
+        }
     }
 }
+
+
+
+////using System;
+////using SAPFEWSELib;
+
+////namespace SAPScriptExample
+////{
+////    class Program
+////    {
+////        static void Main(string[] args)
+////        {
+////            // Initialize the SAP GUI scripting engine
+////            GuiApplication sapGuiApp = new GuiApplication();
+////            GuiConnection sapConnection = sapGuiApp.Connections.Item(0);
+////            GuiSession session = sapConnection.Children.Item(0) as GuiSession;
+
+////            // Find the status bar text
+////            GuiStatusbar statusBar = session.FindById("wnd[0]/sbar") as GuiStatusbar;
+////            string statusBarText = statusBar.Text;
+
+////            // Output the status bar text
+////            Console.WriteLine("Status Bar Text: " + statusBarText);
+////        }
+////    }
+////}
