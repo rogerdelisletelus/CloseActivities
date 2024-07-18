@@ -315,13 +315,13 @@ namespace CloseActivities
                 string statusBarText = statusBar.Text;
 
                 // Print the status bar text to the console
-                //MessageBox.Show(statusBarText);
+                //MessageBox.Show(statusBarText);  
             }
             catch (Exception ex)
             {
                 var tastt = ex.Message; // Handle the exception (optional)
                 // This mimics the behavior of 'On Error Resume Next' by ignoring the error
-            } 
+            }
 
             try
             {
