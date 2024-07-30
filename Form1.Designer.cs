@@ -45,13 +45,6 @@ namespace CloseActivities
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label14 = new System.Windows.Forms.Label();
             this.BtnOpenSapGui = new System.Windows.Forms.Button();
@@ -59,6 +52,13 @@ namespace CloseActivities
             this.label13 = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.txtUser = new System.Windows.Forms.TextBox();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -68,7 +68,6 @@ namespace CloseActivities
             this.panel6 = new System.Windows.Forms.Panel();
             this.RadioButton2 = new System.Windows.Forms.RadioButton();
             this.RadioButton1 = new System.Windows.Forms.RadioButton();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.panel7 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
@@ -243,6 +242,70 @@ namespace CloseActivities
             this.label1.Text = "aaaaaaa";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.label14);
+            this.panel4.Controls.Add(this.BtnOpenSapGui);
+            this.panel4.Controls.Add(this.label12);
+            this.panel4.Controls.Add(this.label13);
+            this.panel4.Controls.Add(this.txtPassword);
+            this.panel4.Controls.Add(this.txtUser);
+            this.panel4.Location = new System.Drawing.Point(2, 1);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(788, 420);
+            this.panel4.TabIndex = 79;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(334, 22);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(0, 20);
+            this.label14.TabIndex = 90;
+            // 
+            // BtnOpenSapGui
+            // 
+            this.BtnOpenSapGui.Location = new System.Drawing.Point(350, 186);
+            this.BtnOpenSapGui.Name = "BtnOpenSapGui";
+            this.BtnOpenSapGui.Size = new System.Drawing.Size(129, 40);
+            this.BtnOpenSapGui.TabIndex = 89;
+            this.BtnOpenSapGui.UseVisualStyleBackColor = true;
+            this.BtnOpenSapGui.Click += new System.EventHandler(this.BtnOpenSapGui_Click);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(200, 107);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(72, 20);
+            this.label12.TabIndex = 88;
+            this.label12.Text = "aaaaaaa";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(200, 64);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(72, 20);
+            this.label13.TabIndex = 87;
+            this.label13.Text = "aaaaaaa";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // txtPassword
+            // 
+            this.txtPassword.Location = new System.Drawing.Point(315, 104);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.Size = new System.Drawing.Size(198, 26);
+            this.txtPassword.TabIndex = 83;
+            // 
+            // txtUser
+            // 
+            this.txtUser.Location = new System.Drawing.Point(315, 61);
+            this.txtUser.Name = "txtUser";
+            this.txtUser.Size = new System.Drawing.Size(198, 26);
+            this.txtUser.TabIndex = 82;
+            // 
             // dateTimePicker2
             // 
             this.dateTimePicker2.Location = new System.Drawing.Point(592, 109);
@@ -298,70 +361,6 @@ namespace CloseActivities
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(175, 26);
             this.textBox1.TabIndex = 57;
-            // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.label14);
-            this.panel4.Controls.Add(this.BtnOpenSapGui);
-            this.panel4.Controls.Add(this.label12);
-            this.panel4.Controls.Add(this.label13);
-            this.panel4.Controls.Add(this.txtPassword);
-            this.panel4.Controls.Add(this.txtUser);
-            this.panel4.Location = new System.Drawing.Point(0, 1);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(788, 420);
-            this.panel4.TabIndex = 79;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(334, 22);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(0, 20);
-            this.label14.TabIndex = 90;
-            // 
-            // BtnOpenSapGui
-            // 
-            this.BtnOpenSapGui.Location = new System.Drawing.Point(350, 186);
-            this.BtnOpenSapGui.Name = "BtnOpenSapGui";
-            this.BtnOpenSapGui.Size = new System.Drawing.Size(129, 40);
-            this.BtnOpenSapGui.TabIndex = 89;
-            this.BtnOpenSapGui.UseVisualStyleBackColor = true;
-            this.BtnOpenSapGui.Click += new System.EventHandler(this.BtnOpenSapGui_Click);
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(200, 107);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(72, 20);
-            this.label12.TabIndex = 88;
-            this.label12.Text = "aaaaaaa";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(200, 64);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(72, 20);
-            this.label13.TabIndex = 87;
-            this.label13.Text = "aaaaaaa";
-            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // txtPassword
-            // 
-            this.txtPassword.Location = new System.Drawing.Point(315, 104);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(198, 26);
-            this.txtPassword.TabIndex = 83;
-            // 
-            // txtUser
-            // 
-            this.txtUser.Location = new System.Drawing.Point(315, 61);
-            this.txtUser.Name = "txtUser";
-            this.txtUser.Size = new System.Drawing.Size(198, 26);
-            this.txtUser.TabIndex = 82;
             // 
             // textBox7
             // 
@@ -485,7 +484,7 @@ namespace CloseActivities
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1211, 619);
+            this.ClientSize = new System.Drawing.Size(1230, 659);
             this.Controls.Add(this.panel7);
             this.Controls.Add(this.panel6);
             this.Controls.Add(this.panel3);
@@ -557,7 +556,7 @@ namespace CloseActivities
         private Panel panel6;
         private RadioButton RadioButton2;
         private RadioButton RadioButton1;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        ////  private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private Panel panel7;
         private Label label8;
         private ListBox listBox1;
