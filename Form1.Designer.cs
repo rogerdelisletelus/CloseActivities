@@ -456,7 +456,7 @@ namespace CloseActivities
             // 
             this.panel7.Controls.Add(this.label8);
             this.panel7.Controls.Add(this.listBox1);
-            this.panel7.Location = new System.Drawing.Point(929, 165);
+            this.panel7.Location = new System.Drawing.Point(103, 160);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(200, 146);
             this.panel7.TabIndex = 86;

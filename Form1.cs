@@ -48,6 +48,7 @@ namespace CloseActivities
             panel3.Visible = false;
             panel4.Visible = true;
             panel5.Visible = false;
+            panel7.Visible = false;
         }
 
         private void BtnGetSQL_Click(object sender, EventArgs e)
