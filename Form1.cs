@@ -1,4 +1,7 @@
-﻿using ExcelDataReader;
+﻿
+using ExcelDataReader;
+
+using Microsoft.Office.Interop.Excel;
 
 using SAPFEWSELib;
 
@@ -9,6 +12,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Windows.Forms;
+
+using DataTable = System.Data.DataTable;
 
 namespace CloseActivities
 {
@@ -23,12 +28,13 @@ namespace CloseActivities
         bool msg2 = false;
         bool msg3 = false;
         bool msg4 = false;
-        DataTable bireTable;
+        public DataTable bireTable;
         public string lang;
         public string gbfield;
         public static int noerror = 0;
         public static string SAP_stat;
         public Object gridview;
+        public int sheetNum;
 
         public Form1()
         {
@@ -55,16 +61,38 @@ namespace CloseActivities
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 textBox7.Text = openFileDialog.FileName;
-                GetExcel(openFileDialog.FileName);
                 filePath = openFileDialog.FileName;
+                GetWorkSheet(filePath);
+                // GetExcel(openFileDialog.FileName);
+
             }
 
             connectionString = ConfigurationManager.ConnectionStrings["BireDB"].ConnectionString;
         }
 
-        public void GetExcel(string filePath)
+        public void GetWorkSheet(string filePath)
         {
-            bireTable = ReadExcelToDataTable(filePath);
+            Microsoft.Office.Interop.Excel.Application excelApp = new Microsoft.Office.Interop.Excel.Application();
+            listBox1.Items.Clear();
+            Workbook workbook = null;
+            workbook = excelApp.Workbooks.Open(filePath);
+            foreach (Worksheet sheet in workbook.Sheets)
+            {
+                listBox1.Items.Add(sheet.Name);
+            }
+            excelApp.Workbooks.Close();
+            panel7.Visible = true;
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            sheetNum = listBox1.SelectedIndex;
+            bireTable = ReadExcelToDataTable(filePath, sheetNum);
+            GetExcel(bireTable, filePath);
+        }
+        public void GetExcel(DataTable bireTable, string filePath)
+        {
+            // bireTable = ReadExcelToDataTable(filePath);
 
             List<string> emptyFields = GetEmptyFields(bireTable);
             label9.Text = "";
@@ -91,7 +119,7 @@ namespace CloseActivities
             }
         }
 
-        static DataTable ReadExcelToDataTable(string filePath)
+        static DataTable ReadExcelToDataTable(string filePath, int sheetNum)
         {
             using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
             {
@@ -105,7 +133,7 @@ namespace CloseActivities
                         }
                     });
 
-                    DataTable dataTable = result.Tables[0];
+                    DataTable dataTable = result.Tables[sheetNum];
                     return dataTable;
                 }
             }
@@ -119,9 +147,12 @@ namespace CloseActivities
             {
                 foreach (DataColumn column in table.Columns)
                 {
-                    if (IsFieldEmpty(row[column]))
+                    if (column.ColumnName == "Project" || column.ColumnName == "Network" || column.ColumnName == "Activity")
                     {
-                        emptyFields.Add($"Row {table.Rows.IndexOf(row) + 2}, Column {column.ColumnName}");
+                        if (IsFieldEmpty(row[column]))
+                        {
+                            emptyFields.Add($"Row {table.Rows.IndexOf(row) + 2}, Column {column.ColumnName}");
+                        }
                     }
                 }
             }
@@ -132,51 +163,53 @@ namespace CloseActivities
         {
             return field == null || string.IsNullOrWhiteSpace(field.ToString());
         }
-        public void BtnLoadSQL_Click(object sender, EventArgs e)
-        {
-            msg1 = false;
-            msg2 = false;
-            msg3 = false;
-            msg4 = false;
-            if (bireTable != null)
-            {
-                using (connection = new SqlConnection(connectionString))
-                {
-                    try
-                    {
-                        SqlCommand SqlCmd = new SqlCommand
-                        {
-                            Connection = connection,
-                            CommandType = CommandType.StoredProcedure,
-                            CommandText = "Insert_into_dbo_BIRE_NILEC",
-                        };
 
-                        SqlCmd.Parameters.AddWithValue("@dataTable", bireTable);
-                        connection.Open();
-                        SqlCmd.ExecuteNonQuery();
-                    }
-                    catch (Exception)
-                    {
-                        msg4 = true;
-                        label11.Text = "";
-                        label10.Text = (lang == "1") ? "Erreur dans la procédure: Insert_into_dbo_BIRE_NILEC" : "Error in procedure: Insert_into_dbo_BIRE_NILEC";
 
-                        hasError = true;
-                    }
-                }
-            }
-            if (!hasError)
-            {
-                msg3 = true;
-                label11.Text = (lang == "1") ? "Fichier Excel transféré avec succès vers la table SQL Bire" : "Excel file successfully transferred to SQL Bire table";
-                panel1.Visible = false;
-                panel2.Visible = false;
-                panel3.Visible = true;
-                panel4.Visible = false;
-                panel5.Visible = false;
+        //public void BtnLoadSQL_Click(object sender, EventArgs e)
+        //{
+        //    msg1 = false;
+        //    msg2 = false;
+        //    msg3 = false;
+        //    msg4 = false;
+        //    if (bireTable != null)
+        //    {
+        //        using (connection = new SqlConnection(connectionString))
+        //        {
+        //            try
+        //            {
+        //                SqlCommand SqlCmd = new SqlCommand
+        //                {
+        //                    Connection = connection,
+        //                    CommandType = CommandType.StoredProcedure,
+        //                    CommandText = "Insert_into_dbo_BIRE_NILEC",
+        //                };
 
-            }
-        }
+        //                SqlCmd.Parameters.AddWithValue("@dataTable", bireTable);
+        //                connection.Open();
+        //                SqlCmd.ExecuteNonQuery();
+        //            }
+        //            catch (Exception)
+        //            {
+        //                msg4 = true;
+        //                label11.Text = "";
+        //                label10.Text = (lang == "1") ? "Erreur dans la procédure: Insert_into_dbo_BIRE_NILEC" : "Error in procedure: Insert_into_dbo_BIRE_NILEC";
+
+        //                hasError = true;
+        //            }
+        //        }
+        //    }
+        //    if (!hasError)
+        //    {
+        //        msg3 = true;
+        //        label11.Text = (lang == "1") ? "Fichier Excel transféré avec succès vers la table SQL Bire" : "Excel file successfully transferred to SQL Bire table";
+        //        panel1.Visible = false;
+        //        panel2.Visible = false;
+        //        panel3.Visible = true;
+        //        panel4.Visible = false;
+        //        panel5.Visible = false;
+
+        //    }
+        //}
 
         private void BtnOpenSAP_Click(object sender, EventArgs e)
         {
@@ -532,7 +565,7 @@ namespace CloseActivities
                 var t3za2a = ex.Message; // Handle the exception (optional)
             }
 
-            ContinueExecution:
+        ContinueExecution:
 
             //if (noerror < 1)
             //{
@@ -583,7 +616,7 @@ namespace CloseActivities
             //ClickButton(session);
 
             //Start cn22
-            //session.StartTransaction("cn22");
+            session.StartTransaction("cn22");
 
             //Press the green checkmark button
             //ClickButton(session);
@@ -625,6 +658,7 @@ namespace CloseActivities
             label5.Text = (lang == "1") ? "Statut:" : "Status:";
             label6.Text = (lang == "1") ? "Début:" : "Start:";
             label7.Text = (lang == "1") ? "Fin:" : "End:";
+            label8.Text = (lang == "1") ? "Choisir la feuille" : "Choose worksheet";
             label13.Text = (lang == "1") ? "SAP ID:" : "SAP ID:";
 
             Button3.Text = (lang == "1") ? "1- Executer confirmation réseau par activité" : "1- Run network confirmation by activity";
@@ -672,6 +706,8 @@ namespace CloseActivities
             // Output the status bar text
             Console.WriteLine("Status Bar Text: " + statusBarText);
         }
+
+
     }
 }
 

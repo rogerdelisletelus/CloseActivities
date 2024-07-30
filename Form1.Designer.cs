@@ -68,12 +68,17 @@ namespace CloseActivities
             this.panel6 = new System.Windows.Forms.Panel();
             this.RadioButton2 = new System.Windows.Forms.RadioButton();
             this.RadioButton1 = new System.Windows.Forms.RadioButton();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.label8 = new System.Windows.Forms.Label();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel6.SuspendLayout();
+            this.panel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -114,7 +119,6 @@ namespace CloseActivities
             this.BtnLoadSQL.TabIndex = 59;
             this.BtnLoadSQL.Text = "Télécharger dans SQL Server";
             this.BtnLoadSQL.UseVisualStyleBackColor = true;
-            this.BtnLoadSQL.Click += new System.EventHandler(this.BtnLoadSQL_Click);
             // 
             // panel5
             // 
@@ -128,6 +132,7 @@ namespace CloseActivities
             this.panel5.Controls.Add(this.label3);
             this.panel5.Controls.Add(this.label2);
             this.panel5.Controls.Add(this.label1);
+            this.panel5.Controls.Add(this.panel4);
             this.panel5.Controls.Add(this.dateTimePicker2);
             this.panel5.Controls.Add(this.dateTimePicker1);
             this.panel5.Controls.Add(this.textBox5);
@@ -135,7 +140,7 @@ namespace CloseActivities
             this.panel5.Controls.Add(this.textBox3);
             this.panel5.Controls.Add(this.textBox2);
             this.panel5.Controls.Add(this.textBox1);
-            this.panel5.Location = new System.Drawing.Point(103, 171);
+            this.panel5.Location = new System.Drawing.Point(101, 161);
             this.panel5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(788, 420);
@@ -302,7 +307,7 @@ namespace CloseActivities
             this.panel4.Controls.Add(this.label13);
             this.panel4.Controls.Add(this.txtPassword);
             this.panel4.Controls.Add(this.txtUser);
-            this.panel4.Location = new System.Drawing.Point(103, 171);
+            this.panel4.Location = new System.Drawing.Point(0, 1);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(788, 420);
             this.panel4.TabIndex = 79;
@@ -448,21 +453,49 @@ namespace CloseActivities
             this.RadioButton1.UseVisualStyleBackColor = true;
             this.RadioButton1.CheckedChanged += new System.EventHandler(this.RadioButton1_CheckedChanged);
             // 
+            // panel7
+            // 
+            this.panel7.Controls.Add(this.label8);
+            this.panel7.Controls.Add(this.listBox1);
+            this.panel7.Location = new System.Drawing.Point(929, 165);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(200, 146);
+            this.panel7.TabIndex = 86;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(27, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(51, 20);
+            this.label8.TabIndex = 87;
+            this.label8.Text = "label8";
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 20;
+            this.listBox1.Location = new System.Drawing.Point(31, 37);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(142, 84);
+            this.listBox1.TabIndex = 86;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1013, 603);
+            this.ClientSize = new System.Drawing.Size(1211, 619);
+            this.Controls.Add(this.panel7);
             this.Controls.Add(this.panel6);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
+            this.Controls.Add(this.panel5);
             this.Controls.Add(this.textBox7);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.panel5);
-            this.Controls.Add(this.panel4);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
@@ -477,6 +510,8 @@ namespace CloseActivities
             this.panel3.ResumeLayout(false);
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
+            this.panel7.ResumeLayout(false);
+            this.panel7.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -522,6 +557,10 @@ namespace CloseActivities
         private Panel panel6;
         private RadioButton RadioButton2;
         private RadioButton RadioButton1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private Panel panel7;
+        private Label label8;
+        private ListBox listBox1;
     }
 }
 
